@@ -8,5 +8,61 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+```{r echo=FALSE, message=FALSE}
+library(readr)
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(dplyr)
+library(forcats)
+url <- "http://dl.tufts.edu/file_assets/generic/tufts:MS115.003.001.00001/0"
+if (!file.exists("all-votes.tsv")) {
+  download.file(url, "nnv-all-votes.zip")
+  unzip("nnv-all-votes.zip", files = "all-votes.tsv")
+}
+nnv <- read_tsv("all-votes.tsv")
+```
+```{r echo=FALSE, message=FALSE}
+names(nnv) <- names(nnv) %>% 
+  str_to_lower() %>%
+  str_replace_all("\\.", "") %>% 
+  str_replace_all("\\s", "_")
+
+extract_year <- function(x) {
+  stopifnot(is.character(x)) 
+  year_char <- stringr::str_extract(x, "\\d{4}") 
+  year_int <- as.integer(year_char)
+  year_int
+}
+
+nnv <- nnv %>%
+  mutate(year = extract_year(date))
+```
 
 
+As shown in the below graph of New York's U.S. House of Representatives elections, Federalists took the lead in vote percentages in almost every year through 1800, after which they were overtaken by the Republicans. This shift in power fits the national trend of the Federalist Party losing power beginning with John Adams'(Federalist) loss to Thomas Jefferson (Democratic-Republican) in the 1800 U.S. presidential election. Although the 1808 elections were close in vote percentages, New York's Federalists did not take the lead over Republicans again until 1812. This reflects the gains made by the party through their opposition to the War of 1812. The party's successes in New York were clearly short-lived, however, as they did not overtake the Republicans again before the party was dissolved in 1824.
+
+One of the most noticeable features of the graph is the spike in the percentage of votes for candidates where the party is "Null" in the year 1805. Looking at a table of the same data makes it clear, however, that this is simply the result of the fact that the data is missing all party information for a special election for New York's 2nd and 3rd District. The winner, George Clinton, Jr., was a Democratic-Republican.
+
+
+```{r  echo=FALSE, message=FALSE}
+nnv_ny <- nnv %>%
+  filter(state == "New York") %>%
+  mutate(affiliation = as.factor(affiliation)) %>%
+  mutate(affiliation = fct_collapse(affiliation, "Democratic Republican" = c("1st Ticket Democratic Republican", "2nd Ticket Democratic Republican"), Administration = c("Administration", "Administration Ticket"), "Anti-Clintonian" = c("Anti-Clinton", "Anti-Clintonian"), "Anti-Federalist" = c("Anti-Federal", "Anti-Federalist", "Anti-Federalist (Republican)"), Clintonian = c("Clinton", "Clintonian", "Clinton Ticket", "Clintonian Ticket"), "Clintonian/Federalist" = c("Clintonian / Federal", "Clintonian/Federal", "Clintonian/Federalist", "Federal / Clintonian", "Federal/Clintonian", "Federalist/Clintonian"), "Federalist" = c("Federalist", "Federal", "Federalists"), "Democrat" = c("Democrat", "Democratic"), "Independent/Federalist" = c("Indepedent/Federalist", "Independent/Federalist"), "King Caucus" = c("King Caucus", "King Caucus Ticket"), "Null" = c("null", "nul", "Others"), Lewisite = c("Lewisite", "Lewis Ticket"), "People's" = c("People's Candidate", "People's Ticket", "The People's Ticket"), Union = c("Union", "Union of Parties"), Republican = c("Republican", "Republicans")))
+
+nnv_ny %>%
+  filter(office == "U.S. House of Representatives") %>%
+  group_by(year, affiliation) %>%
+  summarize(vote = sum(vote, na.rm = TRUE)) %>%
+  group_by(year) %>%
+  mutate(total_votes = sum(vote, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = vote / total_votes, color = fct_reorder2(affiliation, year, vote))) +
+  geom_line() + geom_point(alpha = .7) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Party Competition in New York", subtitle = "U.S. House of Representatives Elections, 1789-1824", x = NULL, y = "Percentage of Vote", color = "Party") +
+  theme_minimal()
+```
+
+
+ 
