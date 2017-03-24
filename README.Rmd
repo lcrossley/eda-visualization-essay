@@ -1,6 +1,4 @@
----
-title: "README"
-author: "Laura Crossley"
-date: "3/21/2017"
-output: html_document
----
+This is my first visualization essay for Clio 2.
+
+- [R Markdown](01-vis-essay.Rmd)
+- [HTML](01-vis-essay.html)

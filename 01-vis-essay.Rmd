@@ -49,7 +49,9 @@ One of the most noticeable features of the graph is the spike in the percentage 
 nnv_ny <- nnv %>%
   filter(state == "New York") %>%
   mutate(affiliation = as.factor(affiliation)) %>%
-  mutate(affiliation = fct_collapse(affiliation, "Democratic Republican" = c("1st Ticket Democratic Republican", "2nd Ticket Democratic Republican"), Administration = c("Administration", "Administration Ticket"), "Anti-Clintonian" = c("Anti-Clinton", "Anti-Clintonian"), "Anti-Federalist" = c("Anti-Federal", "Anti-Federalist", "Anti-Federalist (Republican)"), Clintonian = c("Clinton", "Clintonian", "Clinton Ticket", "Clintonian Ticket"), "Clintonian/Federalist" = c("Clintonian / Federal", "Clintonian/Federal", "Clintonian/Federalist", "Federal / Clintonian", "Federal/Clintonian", "Federalist/Clintonian"), "Federalist" = c("Federalist", "Federal", "Federalists"), "Democrat" = c("Democrat", "Democratic"), "Independent/Federalist" = c("Indepedent/Federalist", "Independent/Federalist"), "King Caucus" = c("King Caucus", "King Caucus Ticket"), "Null" = c("null", "nul", "Others"), Lewisite = c("Lewisite", "Lewis Ticket"), "People's" = c("People's Candidate", "People's Ticket", "The People's Ticket"), Union = c("Union", "Union of Parties"), Republican = c("Republican", "Republicans")))
+  mutate(affiliation = fct_collapse(affiliation, "Democratic Republican" = c("1st Ticket Democratic Republican", "2nd Ticket Democratic Republican"), Administration = c("Administration", "Administration Ticket"), "Anti-Clintonian" = c("Anti-Clinton", "Anti-Clintonian"), "Anti-Federalist" = c("Anti-Federal", "Anti-Federalist", "Anti-Federalist (Republican)"), Clintonian = c("Clinton", "Clintonian", "Clinton Ticket", "Clintonian Ticket"), "Clintonian/Federalist" = c("Clintonian / Federal", "Clintonian/Federal", "Clintonian/Federalist", "Federal / Clintonian", "Federal/Clintonian", "Federalist/Clintonian"), "Federalist" = c("Federalist", "Federal", "Federalists"), "Democrat" = c("Democrat", "Democratic"), "Independent/Federalist" = c("Indepedent/Federalist", "Independent/Federalist"), "King Caucus" = c("King Caucus", "King Caucus Ticket"), "Null" = c("null", "nul", "Others"), Lewisite = c("Lewisite", "Lewis Ticket"), "People's" = c("People's Candidate", "People's Ticket", "The People's Ticket"), Union = c("Union", "Union of Parties"), Republican = c("Republican", "Republicans"))) %>%
+  mutate(county = as.factor(county)) %>%
+  mutate(county = fct_collapse(county, Albany = c("Albany", "Albany (East)", "Albany (West)", "E. Albany", "W. Albany", "Watervliet", "Bern", "Bethlehem", "Coeymans", "Guilderland", "Westerlo"), Allegany = c("Allegany", "Alleghany"), Cattaraugus = c("Cattaraugus", "Cattaragus"), Chautauqua = c("Chautauque", "Chatauque"), Dutchess = c("Dutchess", "Duchess", "Dutchess (Part)"), Genesee = c("Genesee", "Genesse"), Orange = c("Orange", "Orange County"), Rensselaer = c("Rensselaer", "Rensselaerville", "Rennselaer"), Westchester = c("Westchester", "Westchester (Lower)", "Westchester (Upper)")))
 
 nnv_ny %>%
   filter(office == "U.S. House of Representatives") %>%
@@ -62,6 +64,33 @@ nnv_ny %>%
   scale_y_continuous(labels = scales::percent) +
   labs(title = "Party Competition in New York", subtitle = "U.S. House of Representatives Elections, 1789-1824", x = NULL, y = "Percentage of Vote", color = "Party") +
   theme_minimal()
+```
+
+
+The graphs below also chart vote percentages by party in New York's U.S. House of Representatives elections but broken down by county. Most counties fit the general pattern of the state as a whole, with Republicans overtaking Federalists after 1800. However, there are several counties where Federalists continue to dominate throughout the first decades of the 1800s. These Federalist strongholds are Albany, Columbia, Rensselaer, Dutchess, and Oneida, with Albany's Federalist support being the most robust. This demonstrates that the survival of the Federalist Party was due to its continued success in urban areas. Some of the country's most populous cities (and most of New York's most populous cities) were located in these counties: the state capital of Albany in Albany County, Hudson in Columbia, Troy in Rensselaer, and Utica in Oneida.
+^[https://www.census.gov/population/www/documentation/twps0027/tab05.txt]
+As the second most populous county in the state from 1800 to 1810 and the 5th most populous in 1820 (and only of small to average geographic area), Dutchess County was also less rural than most New York counties.
+^[https://www.census.gov/population/www/censusdata/PopulationofStatesandCountiesoftheUnitedStates1790-1990.pdf, pg. 113]
+
+The notable exception to Federalist strength in urban areas is New York County (and the neighboring counties of Queens, Richmond, Kings, and Westchester). Although Federalists briefly overtook Republicans in New York County because of the War of 1812, Republicans maintained a lead over Federalists from the mid-1790s through the 1820s. The explanation for this anomaly is that New York City was under the control of the Democratic-Republican political machine Tammany Hall, founded in the city in 1789. 
+
+
+```{r warning = FALSE, message = FALSE, echo = FALSE, fig.width = 25, fig.height = 40}
+nnv_ny %>%
+  filter(office == "U.S. House of Representatives", !is.na(county)) %>%
+  mutate(affiliation = fct_lump(affiliation, n = 6)) %>%
+  group_by(year, affiliation, county) %>%
+  summarize(vote = sum(vote, na.rm = TRUE)) %>%
+  group_by(year, county) %>%
+  mutate(total_votes = sum(vote, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = vote / total_votes, color = affiliation)) +
+  geom_line() + geom_point(alpha = .7) +
+  facet_wrap(~ county, ncol = 4) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Party Competition in New York by County", subtitle = "U.S. House of Representatives Elections, 1789-1824", x = NULL, y = "Percentage of Vote", color = "Party") +
+  theme_minimal() +
+  theme(text = element_text(size = 26, lineheight = 50), legend.key.width = unit(4, "line"))
+
 ```
 
 
