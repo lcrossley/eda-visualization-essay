@@ -40,9 +40,9 @@ nnv <- nnv %>%
 ```
 
 
-As shown in the below graph of New York's U.S. House of Representatives elections, Federalists took the lead in vote percentages in almost every year through 1800, after which they were overtaken by the Republicans. This shift in power fits the national trend of the Federalist Party losing power beginning with John Adams'(Federalist) loss to Thomas Jefferson (Democratic-Republican) in the 1800 U.S. presidential election. Although the 1808 elections were close in vote percentages, New York's Federalists did not take the lead over Republicans again until 1812. This reflects the gains made by the party through their opposition to the War of 1812. The party's successes in New York were clearly short-lived, however, as they did not overtake the Republicans again before the party was dissolved in 1824.
+As shown in the below graph of New York's U.S. House of Representatives elections, Federalists took the lead in vote percentages in almost every year through 1800, after which they were overtaken by the Republicans. This shift in power fits the national trend of the Federalist Party losing power beginning with John Adams' (Federalist) loss to Thomas Jefferson (Democratic-Republican) in the 1800 U.S. presidential election. Although the 1808 elections were close in vote percentages, New York's Federalists did not take the lead over Republicans again until 1812. This reflects the gains made by the party through their opposition to the War of 1812. The party's successes in New York were clearly short-lived, however, as they did not overtake the Republicans again before the party was dissolved in 1824.
 
-One of the most noticeable features of the graph is the spike in the percentage of votes for candidates where the party is "Null" in the year 1805. Looking at a table of the same data makes it clear, however, that this is simply the result of the fact that the data is missing all party information for a special election for New York's 2nd and 3rd District. The winner, George Clinton, Jr., was a Democratic-Republican.
+One of the most noticeable features of the graph is the spike in the percentage of votes for candidates where the party is "Null" in the year 1805. Looking at a table of the same data makes it clear that this is simply the result of the fact that the data is missing all party information for a special election for New York's 2nd and 3rd District. The winner, George Clinton, Jr., was a Democratic-Republican.
 
 
 ```{r  echo=FALSE, message=FALSE}
@@ -67,12 +67,14 @@ nnv_ny %>%
 ```
 
 
-The graphs below also chart vote percentages by party in New York's U.S. House of Representatives elections but broken down by county. Most counties fit the general pattern of the state as a whole, with Republicans overtaking Federalists after 1800. However, there are several counties where Federalists continue to dominate throughout the first decades of the 1800s. These Federalist strongholds are Albany, Columbia, Rensselaer, Dutchess, and Oneida, with Albany's Federalist support being the most robust. This demonstrates that the survival of the Federalist Party was due to its continued success in urban areas. Some of the country's most populous cities (and most of New York's most populous cities) were located in these counties: the state capital of Albany in Albany County, Hudson in Columbia, Troy in Rensselaer, and Utica in Oneida.
+The graphs below also chart vote percentages by party in New York's U.S. House of Representatives elections but further broken down by county. There are strongly Republican counties such as Cortland, Essex, Genesee, Orange, Rockland, Seneca, and Suffolk. There are also some counties that stand out as "swing" counties, where the dominant party varied from election to election throughout a significant part of the measured time period. Examples include Ontario, Tioga, Kings, and Montgomery.
+
+Finally, there are several counties where Federalists continued to dominate vote percentages throughout the first decades of the 1800s, defying the general pattern of the state and country as a whole, where Federalists lost strength after 1800. These Federalist strongholds are Albany, Columbia, Rensselaer, Dutchess, and Oneida, with Albany's Federalist support being the most robust. This demonstrates that urban areas were crucial for the continued survival of the Federalist Party. Most of New York's most populous cities (indeed, some of the country's most populous cities) were located in these counties: the state capital of Albany in Albany County, Hudson in Columbia, Troy in Rensselaer, and Utica in Oneida.
 ^[https://www.census.gov/population/www/documentation/twps0027/tab05.txt]
 As the second most populous county in the state from 1800 to 1810 and the 5th most populous in 1820 (and only of small to average geographic area), Dutchess County was also less rural than most New York counties.
 ^[https://www.census.gov/population/www/censusdata/PopulationofStatesandCountiesoftheUnitedStates1790-1990.pdf, pg. 113]
 
-The notable exception to Federalist strength in urban areas is New York County (and the neighboring counties of Queens, Richmond, Kings, and Westchester). Although Federalists briefly overtook Republicans in New York County because of the War of 1812, Republicans maintained a lead over Federalists from the mid-1790s through the 1820s. The explanation for this anomaly is that New York City was under the control of the Democratic-Republican political machine Tammany Hall, founded in the city in 1789. 
+The notable exception to Federalist strength in urban areas is New York County. Although Federalists briefly overtook Republicans in New York County because of the War of 1812, Republicans maintained a lead over Federalists from the mid-1790s through the 1820s. The reason behind this anomaly is that New York City was under the control of the Democratic-Republican political machine Tammany Hall, founded in the city in 1789. In New York County, Tammany kept the power of the Federalist Party in check.
 
 
 ```{r warning = FALSE, message = FALSE, echo = FALSE, fig.width = 25, fig.height = 40}
@@ -94,4 +96,5 @@ nnv_ny %>%
 ```
 
 
- 
+
+
